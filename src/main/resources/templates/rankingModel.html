@@ -46,12 +46,32 @@
 					</tbody>
 				</table>
 			
+			<br>
 			<div class="row justify-content-md-center">
 				<div class="col-md-auto">
-					The average success rate for all players in % is:
+					<h4>The average success rate for all players is (%):</h4>
 				</div>
 				<div class="col-md-auto">
-					<strong><div th:text="${successAverage}"></div></strong>
+					<h4><strong><div th:text="${successAverage}"></div></strong></h4>
+				</div>
+				<br>
+			</div>
+			<br>
+			<div class="row justify-content-md-center">	
+				<div class="col-md-auto">
+					<h4>The actual winner is...</h4>
+				</div>
+				<div class="col-md-auto">
+					<h4><strong><div th:text="${winner}"></div></strong></h4>
+				</div>
+			</div>
+			<br>
+			<div class="row justify-content-md-center">	
+				<div class="col-md-auto">
+					<h4>The actual loser is...</h4>
+				</div>
+				<div class="col-md-auto">
+					<h4><strong><div th:text="${loser}"></div></strong></h4>
 				</div>
 			</div>
 			<br>

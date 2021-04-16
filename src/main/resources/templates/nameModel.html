@@ -10,56 +10,33 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
-<title>Options of the 'Lucky Seven' game app</title>
+<title>Change name in the 'Lucky Seven' game</title>
 </head>
 <body class="well" style="background-color: #FFE87C;">
-	<h3 class="text-center"><strong>THE 'LUCKY SEVEN' GAME OPTIONS</strong></h3>
+	<h3 class="text-center"><strong>CHANGE YOUR USER NAME IN THE 'LUCKY SEVEN' GAME!</strong></h3>
 	<br><br><br>
 	
 	<div class= "container-fluid text-center" style="background-color: #FBF6D9;">
-		<br>	
+		<br>
 		<div class="row justify-content-md-center">
 			<div class="col-md-auto">
 				You are connected as player:
 			</div>
 			<div class="col-md-auto">
-				<strong><div th:text="${user.getName()}"></div></strong>
+				<strong><div th:text="${user.getName()}" name=name></div></strong>
 			</div>
-		</div>	
-	<br>
-	<h3 class=text-center><strong>WHAT WOULD YOU LIKE TO DO?</strong></h3>
-	<br><br>
-	
-		<div class="row justify-content-md-center">
-			<div class="col-md-auto">
-				<form action="/luckyseven/options/user/name" method="post">								
-					<button type="submit" class="btn btn-primary">CHANGE USERNAME</button>
-				</form>
-			</div>
-			<div class="col-1">
-			</div>
-			<div class="col-md-auto">
-				<form action="/luckyseven/options/playround" method=get>
-					<button type="submit" class="btn btn-success">PLAY ROUND!</button>
-				</form>
-			</div>
-			<div class="col-1">
-			</div>
-			<div class="col-md-auto">
-				<form action="/luckyseven/options/ranking" method=get>
-					<button type="submit" class="btn btn-info">GO TO RANKING</button>
-				</form>
-			</div>
-			<div class="col-1">
-			</div>
-			<div class="col-md-auto">
-				<form action="/luckyseven/options/user/rounds" method="get">								
-					<button type="submit" class="btn btn-warning">SEE MY ROUNDS</button>
-				</form>
-			</div>
-		</div>	
+		</div>
 		<br><br>
+		<form action="/luckyseven/options/user/name_changed" method=post>
+			<strong>ENTER NEW NAME: </strong><input type=text name=newName>
+			<br><br>
+			<p>(If you do not enter a name, you will play as anonymous. 
+				You won't be able to recover your scores next time.)</p>
+			<br>
+			<button type="submit" class="btn btn-primary">UPDATE NAME</button>
+			
+		</form>
+		<br>
 	</div>
-	
 </body>
 </html>

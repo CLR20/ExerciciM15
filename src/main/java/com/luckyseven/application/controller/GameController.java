@@ -1,6 +1,8 @@
 package com.luckyseven.application.controller;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.persistence.OrderBy;
@@ -34,6 +36,8 @@ public class GameController {
 	Users user;
 	long userId;
 	double successAverage;
+	String winner;
+	String loser;
 	
 	//Starting app, asking for user name.
 	@GetMapping("/luckyseven")
@@ -57,16 +61,40 @@ public class GameController {
 		return "options";
 	}
 	
+	// Changing user's name
+	@PostMapping("/luckyseven/options/user/name")
+	@ResponseStatus(HttpStatus.OK)
+	public String changeUserName(Model model) {
+		model.addAttribute("user", user);
+		return "nameModel";
+	}
+	
+	// Setting new user's name
+	@PostMapping("/luckyseven/options/user/name_changed")
+	@ResponseStatus(HttpStatus.OK)
+	public String changeUserName(Model model, String newName) {
+		user.setName(newName);
+		uDao.save(user);
+		updateData();
+		getUserData(user);
+		model.addAttribute("user", user);
+		return "options";
+	}
+	
 	//Getting users ranking.
-	@PostMapping("/luckyseven/options/ranking")
+	@GetMapping("/luckyseven/options/ranking")
 	@ResponseStatus(HttpStatus.OK)
 	public String getUsers(Model model) {
 		updateData();
 		List<Users> users = uDao.findAll();
 		successAverage = getAverageSuccess();
+		winner = getBestUser();
+		loser = getWorstUser();
 		model.addAttribute("user", user);
 		model.addAttribute("users", users);
 		model.addAttribute("successAverage", successAverage);
+		model.addAttribute("winner", winner);
+		model.addAttribute("loser", loser);
 		return "rankingModel";
 	}
 	
@@ -100,7 +128,7 @@ public class GameController {
 	}
 	
 	// Deleting user's rounds.
-	@GetMapping("/luckyseven/options/user/rounds_deleted")
+	@PostMapping("/luckyseven/options/user/rounds_deleted")
 	@ResponseStatus(HttpStatus.OK)
 	public String deleteUserRounds(Model model) {
 		updateData();
@@ -183,6 +211,28 @@ public class GameController {
 		return Math.round(average);
 	}
 	
+	//Getting best user.
+	public String getBestUser() {
+		Users best;
+		HashMap<Double, Long> rates = new HashMap<Double, Long>();
+		for (Users u: uDao.findAll()) {
+			rates.put(u.getSuccessRate(), u.getId());
+		}
+		best = uDao.findById(rates.get(Collections.max(rates.keySet()))).get();
+		return best.getName() + " (id: " + best.getId() + ")";
+	}
+	
+	//Getting best user.
+	public String getWorstUser() {
+		Users worst;
+		HashMap<Double, Long> rates = new HashMap<Double, Long>();
+		for (Users u: uDao.findAll()) {
+			rates.put(u.getSuccessRate(), u.getId());
+		}
+		worst = uDao.findById(rates.get(Collections.min(rates.keySet()))).get();
+		return worst.getName() + " (id: " + worst.getId() + ")";
+	}
+		
 	// Getting all rounds played by user.
 	public List<Rounds> getUserRounds(Users user) {
 		List<Rounds> userRounds = new ArrayList<Rounds>();
